@@ -102,6 +102,14 @@ func testChannel(ctx context.Context, channel *model.Channel, request *relaymode
 	}
 	meta.OriginModelName, meta.ActualModelName = request.Model, modelName
 	request.Model = modelName
+	requestJSON, _ := json.Marshal(request)
+	tmpLogContent := fmt.Sprintf("渠道 %s 测试， 请求：%s", channel.Name, string(requestJSON))
+	go model.RecordTestLog(ctx, &model.Log{
+		ChannelId:   channel.Id,
+		ModelName:   modelName,
+		Content:     tmpLogContent,
+		ElapsedTime: helper.CalcElapsedTime(startTime),
+	})
 	convertedRequest, err := adaptor.ConvertRequest(c, relaymode.ChatCompletions, request)
 	if err != nil {
 		return "", err, nil
