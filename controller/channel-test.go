@@ -40,6 +40,7 @@ func buildTestRequest(model string) *relaymodel.GeneralOpenAIRequest {
 	}
 	testRequest := &relaymodel.GeneralOpenAIRequest{
 		Model: model,
+		Stream: true,
 	}
 	testMessage := relaymodel.Message{
 		Role:    "user",
